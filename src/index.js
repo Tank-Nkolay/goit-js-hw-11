@@ -9,7 +9,7 @@ import {
   renderImages,
   renderMoreImages,
 } from './js/gallery-render';
-import backtotopBtn from './js/backtotop-btn';
+// import backtotopBtn from './js/backtotop-btn';=================
 
 const refs = {
   searchForm: document.querySelector('.search-form'),
