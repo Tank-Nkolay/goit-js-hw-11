@@ -9,7 +9,7 @@
     width: 25px;
     border: none;
     border-radius: 0 3px 3px 0;
-    background-color: rgb(199, 195, 195);
+    background-color: rgb(236, 232, 232);
     background-image: url(../images/search-icon.svg);
     background-size: contain;
     background-repeat: no-repeat;
@@ -18,7 +18,6 @@
     &:hover,
     &:focus {
       background-color: darkgrey;
-      outline: auto;
     }
   }
 
@@ -26,6 +25,6 @@
     line-height: 1.32;
     padding: 5px 0 5px 10px;
     border: none;
-    border-radius: 5px 0 0 5px;
+    border-radius: 3px 0 0 3px;
   }
 }
