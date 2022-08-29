@@ -1,108 +1,135 @@
-import PixabayApiService from './js/pixabay-API-service';
-import LoadMoreBtnApi from './js/loadMoreBtn';
-// import { renderImg } from './js/renderImg';
-import Notiflix from 'notiflix';
+// Libraries imports
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
+// Dev imports
+import ImageApiService from './js/pixabay-api-service';
+import {
+  makeImageCardsMarkup,
+  renderImages,
+  renderMoreImages,
+} from './js/gallery-render';
+import backtotopBtn from './js/backtotop-btn';
 
-// Уведомление
-// После первого запроса при каждом новом поиске выводить уведомление в котором будет написано сколько всего нашли изображений (свойство totalHits). Текст уведомления "Hooray! We found totalHits images."
+const refs = {
+  searchForm: document.querySelector('.search-form'),
+  imageGallery: document.querySelector('.gallery'),
+  searchInput: document.querySelector('input[name="searchQuery"]'),
+};
 
-// Notiflix.Notify.success('Hooray! We found totalHits images.');
-
-// В ответе бэкенд возвращает свойство totalHits - общее количество изображений которые подошли под критерий поиска (для бесплатного аккаунта). Если пользователь дошел до конца коллекции, пряч кнопку и выводи уведомление с текстом "We're sorry, but you've reached the end of search results."
-
-// Notiflix.Notify.info('We're sorry, but you've reached the end of search results.');
-
-const formEl = document.querySelector('#search-form');
-const input = document.querySelector('input');
-const imgContainer = document.querySelector('.gallery');
-
-const pixabayApiService = new PixabayApiService();
-const loadMoreBtn = new LoadMoreBtnApi({
-  selector: '.load-more',
-  hidden: true,
+// Declaring variable for Intersection observer disconnection on form resubmit
+let formJustSubmitted = false;
+// Creating instances for working with API and SimpleLightBox Gallery
+const imageService = new ImageApiService();
+const simpeLightBoxGallery = new SimpleLightbox('.gallery a', {
+  captionsData: 'alt',
+  captionDelay: 250,
 });
 
-formEl.addEventListener('submit', onSearch);
+// Adding event listner for search query
+refs.searchForm.addEventListener('submit', onSearch);
 
-loadMoreBtn.refs.button.addEventListener('click', fetchHitsPixab);
+// Search query handler
+async function onSearch(e) {
+  e.preventDefault();
+  formJustSubmitted = true;
+  // Reseting imageService parameters on new query
+  imageService.resetPage();
+  refs.imageGallery.innerHTML = '';
+  // Reseting end of results variable
 
-function onSearch(event) {
-  event.preventDefault();
-
-  pixabayApiService.searchQuery =
-    event.currentTarget.elements.searchQuery.value.trim();
-  if (pixabayApiService.searchQuery === '') {
-    return Notiflix.Notify.warning('Write something');
+  // Checking if user typed something
+  const query = e.currentTarget.elements.searchQuery.value.trim();
+  if (!query) {
+    Notify.warning('You should type something...');
+    return;
   }
+  imageService.query = query;
 
-  loadMoreBtn.show();
-  pixabayApiService.resetPage();
-  clearImgContainer();
-  fetchHitsPixab();
-  // .catch(onFetchError);
+  try {
+    const response = await imageService.fetchImage();
+    const data = response.data;
+    if (data.hits.length === 0) {
+      Notify.failure(
+        'Sorry, there are no images matching your search query. Please try again.'
+      );
+      return;
+    }
+
+    const markup = makeImageCardsMarkup(data);
+
+    renderImages(markup, refs.imageGallery);
+    // Adding IntersectionObserver for infinite srcroll
+    formJustSubmitted = false;
+    addGalleryScrollObserver();
+    // Refreshing SimpleLightBoxGallery after new items rendered
+    simpeLightBoxGallery.refresh();
+
+    Notify.success(`Hooray! We found ${data.totalHits} images`);
+  } catch (error) {
+    console.log(error);
+  }
 }
 
-function renderImg(hits) {
-  const markupImg = hits
-    .map(
-      ({
-        webformatURL,
-        largeImageURL,
-        tags,
-        likes,
-        views,
-        comments,
-        downloads,
-      }) => `<div class="photo-card"><a class="gallery-item" href="${largeImageURL}"><img class="gallery-image" src="${webformatURL}" alt="${tags}" loading="lazy"/></a>
-  <div class="info">
-    <p class="info-item">
-      <b>Likes</b>${likes}
-    </p>
-    <p class="info-item">
-      <b>Views</b>${views}
-    </p>
-    <p class="info-item">
-      <b>Comments</b>${comments}
-    </p>
-    <p class="info-item">
-      <b>Downloads</b>${downloads}
-    </p>
-  </div>
-</div>`
-    )
-    .join('');
-  imgContainer.insertAdjacentHTML('beforeend', markupImg);
-}
+// Loading more images function
+async function onLoadMore() {
+  try {
+    const response = await imageService.fetchImage();
+    const data = response.data;
 
-function onFetchError(error) {
-  Notiflix.Notify.warning('Oops, smth wrong');
-}
+    // Checking for end of query results
+    const totalPages = Math.ceil(data.totalHits / imageService.perPage);
+    if (imageService.page - 1 === totalPages + 1) {
+      Notify.failure(
+        `We're sorry, but you've reached the end of search results.`
+      );
 
-function fetchHitsPixab() {
-  loadMoreBtn.disable();
-  pixabayApiService.fetchImg().then(hits => {
-    renderImg(hits);
-    loadMoreBtn.enable();
+      return;
+    }
+
+    const markup = makeImageCardsMarkup(data);
+    renderMoreImages(markup, refs.imageGallery);
+    // Refreshing SimpleLightBoxGallery after new items rendered
+    simpeLightBoxGallery.refresh();
+    // Smooth scrolling when loading more content
+    scrollWhenLoaded();
+    addGalleryScrollObserver();
+  } catch (error) {
+    console.log(error);
+    return 'error';
+  }
+}
+// Smooth scrolling when loading more content
+function scrollWhenLoaded() {
+  const { height: cardHeight } = document
+    .querySelector('.gallery')
+    .firstElementChild.getBoundingClientRect();
+
+  window.scrollBy({
+    top: cardHeight * 2,
+    behavior: 'smooth',
   });
 }
+// Creating gallery scroll observer for loading more content onScroll
+function addGalleryScrollObserver() {
+  const callback = entries => {
+    entries.forEach(entry => {
+      if (formJustSubmitted) {
+        observer.disconnect();
+        return;
+      }
+      if (!entry.isIntersecting) {
+        onLoadMore();
+        observer.disconnect();
+      }
+    });
+  };
 
-function clearImgContainer() {
-  imgContainer.innerHTML = '';
+  const options = {
+    rootMargin: '-100% 0% 0% 0%',
+  };
+
+  const observer = new IntersectionObserver(callback, options);
+
+  observer.observe(refs.imageGallery);
 }
-
-// const { height: cardHeight } = document
-//   .querySelector('.gallery')
-//   .firstElementChild.getBoundingClientRect();
-
-// window.scrollBy({
-//   top: cardHeight * 2,
-//   behavior: 'smooth',
-// });
-
-// Вместо кнопки «Load more» можно сделать бесконечную загрузку изображений при прокрутке страницы. Мы предоставлям тебе полную свободу действий в реализации, можешь использовать любые библиотеки.
-
-// После первого запроса кнопка появляется в интерфейсе под галереей.
-// При повторном сабмите формы кнопка сначала прячется, а после запроса опять отображается.
-// В ответе бэкенд возвращает свойство totalHits - общее количество изображений которые подошли под критерий поиска (для бесплатного аккаунта). Если пользователь дошел до конца коллекции, пряч кнопку и выводи уведомление с текстом "We're sorry, but you've reached the end of search results.".

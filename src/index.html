@@ -3,27 +3,35 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Homework 11</title>
+    <title>Page title</title>
     <link rel="stylesheet" href="./sass/index.scss" />
+    <script type="module" src="./index.js"></script>
   </head>
   <body>
-    <!-- ❗️❗️❗️ Add partials like so for every page -->
-    <!-- <include src="./partials/formTmpl.html"></include> -->
-
-    <form class="search-form" id="search-form">
-      <input
-        type="text"
-        name="searchQuery"
-        autocomplete="off"
-        placeholder="Search images..."
-      />
-      <button type="submit">Search</button>
-    </form>
-
-    <div class="gallery"></div>
-
-    <button type="button" class="load-more">Load more</button>
-
-    <script type="module" src="./index.js"></script>
+    <div class="wrapper">
+      <form class="search-form" id="search-form">
+        <input
+          type="text"
+          name="searchQuery"
+          autocomplete="off"
+          placeholder="Search images..."
+        />
+        <button type="submit"></button>
+      </form>
+      <div class="gallery">
+        <!-- Image cards -->
+      </div>
+    </div>
+    <button type="button" class="back-to-top hidden">&#8593;</button>
+    <footer class="footer">
+      This app was build with
+      <a href="https://pixabay.com/" target="_blank"
+        >Pixabay free image search API
+        <img
+          src="https://pixabay.com/static/img/logo.svg"
+          alt="pixabay logo"
+          class="pixabay-logo"
+      /></a>
+    </footer>
   </body>
 </html>

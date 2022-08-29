@@ -1,0 +1,30 @@
+.back-to-top {
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+
+  background-color: transparent;
+  border-radius: 50%;
+  z-index: 900;
+  border: 1px solid #9403fc;
+  opacity: 1;
+  transform: translate(0) scale(1) rotate(0);
+  font-size: 30px;
+  color: #9403fc;
+
+  transition: opacity linear 250ms, transform linear 250ms;
+  &:hover,
+  &:focus {
+    outline: none;
+  }
+
+  &.hidden {
+    opacity: 0;
+    transform: translate(200px, 200px) scale(5) rotate(720deg);
+    transition: opacity linear 250ms, transform linear 250ms;
+    pointer-events: none;
+  }
+}
