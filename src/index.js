@@ -1,11 +1,7 @@
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
-import {
-  makeImageCardsMarkup,
-  renderImages,
-  renderMoreImages,
-} from './js/render-img';
+import { makeImgCards, renderImg, renderMoreImg } from './js/render-img';
 import ImgApiService from './js/pixabay-api-service';
 
 // слушаем
@@ -50,8 +46,8 @@ async function onSearch(e) {
       return;
     }
 
-    const markup = makeImageCardsMarkup(data);
-    renderImages(markup, refs.imgGallery);
+    const markup = makeImgCards(data);
+    renderImg(markup, refs.imgGallery);
     formSubm = false;
     addGalleryScroll();
 
@@ -78,8 +74,8 @@ async function onLoadMore() {
       return;
     }
 
-    const markup = makeImageCardsMarkup(data);
-    renderMoreImages(markup, refs.imgGallery);
+    const markup = makeImgCards(data);
+    renderMoreImg(markup, refs.imgGallery);
     simpeLightBoxGallery.refresh();
 
     scrollLoad();

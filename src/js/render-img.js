@@ -1,4 +1,6 @@
-function makeImageCardsMarkup(result) {
+export { makeImgCards, renderMoreImg, renderImg };
+
+function makeImgCards(result) {
   const imagesArr = result.hits;
   return imagesArr
     .map(
@@ -24,12 +26,10 @@ function makeImageCardsMarkup(result) {
     .join('');
 }
 
-function renderImages(markup, parentEl) {
-  parentEl.innerHTML = markup;
+function renderImg(markup, itemEl) {
+  itemEl.innerHTML = markup;
 }
 
-function renderMoreImages(markup, parentEl) {
-  parentEl.insertAdjacentHTML('beforeend', markup);
+function renderMoreImg(markup, itemEl) {
+  itemEl.insertAdjacentHTML('beforeend', markup);
 }
-
-export { renderImages, makeImageCardsMarkup, renderMoreImages };
