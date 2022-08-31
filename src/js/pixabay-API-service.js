@@ -23,9 +23,7 @@ export default class ImgApiService {
     });
 
     const url = `${BASE_URL}?${searchParams}`;
-
     const response = await axios.get(url);
-
     this.page += 1;
 
     return response;
