@@ -1,12 +1,12 @@
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
-import ImgApiService from './js/pixabay-api-service';
 import {
   makeImageCardsMarkup,
   renderImages,
   renderMoreImages,
 } from './js/render-img';
+import ImgApiService from './js/pixabay-api-service';
 
 // слушаем
 const refs = {
@@ -51,9 +51,7 @@ async function onSearch(e) {
     }
 
     const markup = makeImageCardsMarkup(data);
-
     renderImages(markup, refs.imgGallery);
-
     formSubm = false;
     addGalleryScrollObserver();
 
