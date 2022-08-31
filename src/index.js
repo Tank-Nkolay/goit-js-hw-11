@@ -4,7 +4,7 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 import { makeImgCards, renderImg, renderMoreImg } from './js/render-img';
 import ImgApiService from './js/pixabay-api-service';
 
-// слушаем
+// слушаем ===
 const refs = {
   searchForm: document.querySelector('.search-form'),
   imgGallery: document.querySelector('.gallery'),
