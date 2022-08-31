@@ -5,19 +5,19 @@ function makeImgCards(result) {
   return imagesArr
     .map(
       image =>
-        `<div class="photo-card">
+        `<div class="box-img">
   <a href="${image.largeImageURL}"><img src="${image.webformatURL}" alt="${image.tags}" loading="lazy" /></a>
-  <div class="description">
-    <p class="description-item">
+  <div class="info">
+    <p class="info-item">
       <b>Likes</b>${image.likes}
     </p>
-    <p class="description-item">
+    <p class="info-item">
       <b>Views</b>${image.views}
     </p>
-    <p class="description-item">
+    <p class="info-item">
       <b>Comments</b>${image.comments}
     </p>
-    <p class="description-item">
+    <p class="info-item">
       <b>Downloads</b>${image.downloads}
     </p>
   </div>
