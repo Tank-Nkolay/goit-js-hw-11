@@ -11,7 +11,7 @@ const refs = {
   searchInput: document.querySelector('input[name="searchQuery"]'),
 };
 
-// константы и переменные
+// константы и переменные ===
 let formSubm = false;
 const imageService = new ImgApiService();
 const simpeLightBoxGallery = new SimpleLightbox('.gallery a', {
