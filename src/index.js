@@ -53,7 +53,7 @@ async function onSearch(e) {
     const markup = makeImageCardsMarkup(data);
     renderImages(markup, refs.imgGallery);
     formSubm = false;
-    addGalleryScrollObserver();
+    addGalleryScroll();
 
     simpeLightBoxGallery.refresh();
 
@@ -80,18 +80,17 @@ async function onLoadMore() {
 
     const markup = makeImageCardsMarkup(data);
     renderMoreImages(markup, refs.imgGallery);
-
     simpeLightBoxGallery.refresh();
 
-    scrollWhenLoaded();
-    addGalleryScrollObserver();
+    scrollLoad();
+    addGalleryScroll();
   } catch (error) {
     console.log(error);
     return 'error';
   }
 }
 // плавная прокрутка
-function scrollWhenLoaded() {
+function scrollLoad() {
   const { height: cardHeight } = document
     .querySelector('.gallery')
     .firstElementChild.getBoundingClientRect();
@@ -102,7 +101,7 @@ function scrollWhenLoaded() {
   });
 }
 
-function addGalleryScrollObserver() {
+function addGalleryScroll() {
   const callback = entries => {
     entries.forEach(entry => {
       if (formSubm) {
