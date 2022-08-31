@@ -3,7 +3,7 @@ import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 // Dev imports
-import ImageApiService from './js/pixabay-api-service';
+import ImgApiService from './js/pixabay-api-service';
 import {
   makeImageCardsMarkup,
   renderImages,
@@ -19,7 +19,7 @@ const refs = {
 // Declaring variable for Intersection observer disconnection on form resubmit
 let formJustSubmitted = false;
 // Creating instances for working with API and SimpleLightBox Gallery
-const imageService = new ImageApiService();
+const imageService = new ImgApiService();
 const simpeLightBoxGallery = new SimpleLightbox('.gallery a', {
   captionsData: 'alt',
   captionDelay: 250,
@@ -46,7 +46,7 @@ async function onSearch(e) {
   imageService.query = query;
 
   try {
-    const response = await imageService.fetchImage();
+    const response = await imageService.fetchImg();
     const data = response.data;
     if (data.hits.length === 0) {
       Notify.failure(
@@ -73,7 +73,7 @@ async function onSearch(e) {
 // Loading more images function
 async function onLoadMore() {
   try {
-    const response = await imageService.fetchImage();
+    const response = await imageService.fetchImg();
     const data = response.data;
 
     // Checking for end of query results

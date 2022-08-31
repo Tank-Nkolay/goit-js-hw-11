@@ -3,7 +3,7 @@ import axios from 'axios';
 const PIXABAY_KEY = '29585906-cf8cb97233adcc9f8a9891715';
 const BASE_URL = 'https://pixabay.com/api/';
 
-export default class ImageApiService {
+export default class ImgApiService {
   constructor() {
     this.searchQuery = '';
     this.page = 1;
@@ -11,7 +11,7 @@ export default class ImageApiService {
     this.perPage = 40;
   }
 
-  async fetchImage() {
+  async fetchImg() {
     const searchParams = new URLSearchParams({
       key: PIXABAY_KEY,
       q: this.searchQuery,

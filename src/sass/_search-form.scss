@@ -6,8 +6,8 @@
   padding-bottom: 10px;
 
   & > button {
-    width: 25px;
     border: none;
+    width: 25px;
     border-radius: 0 3px 3px 0;
     background-color: rgb(236, 232, 232);
     background-image: url(../images/search-icon.svg);
@@ -22,9 +22,8 @@
   }
 
   & > input {
-    line-height: 1.32;
-    padding: 5px 0 5px 10px;
     border: none;
+    padding: 5px 0 5px 10px;
     border-radius: 3px 0 0 3px;
   }
 }
