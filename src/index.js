@@ -2,7 +2,7 @@ import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import { makeImgCards, renderImg, renderMoreImg } from './js/render-img';
-import ImgApiService from './js/pixabay-api-service';
+import ImgApiService from './js/pixabay-API-service';
 
 // слушаем ===
 const refs = {
