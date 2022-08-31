@@ -8,7 +8,7 @@ import {
   makeImageCardsMarkup,
   renderImages,
   renderMoreImages,
-} from './js/gallery-render';
+} from './js/render-img';
 
 const refs = {
   searchForm: document.querySelector('.search-form'),
