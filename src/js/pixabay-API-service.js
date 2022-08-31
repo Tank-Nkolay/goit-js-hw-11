@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 const PIXABAY_KEY = '29585906-cf8cb97233adcc9f8a9891715';
 const BASE_URL = 'https://pixabay.com/api/';
