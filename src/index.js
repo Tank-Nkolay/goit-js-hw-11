@@ -11,7 +11,7 @@ import {
 // слушаем
 const refs = {
   searchForm: document.querySelector('.search-form'),
-  imageGallery: document.querySelector('.gallery'),
+  imgGallery: document.querySelector('.gallery'),
   searchInput: document.querySelector('input[name="searchQuery"]'),
 };
 
@@ -31,11 +31,11 @@ async function onSearch(e) {
   formSubm = true;
 
   imageService.resetPage();
-  refs.imageGallery.innerHTML = '';
+  refs.imgGallery.innerHTML = '';
 
   const query = e.currentTarget.elements.searchQuery.value.trim();
   if (!query) {
-    Notify.warning('You should type something...');
+    Notify.warning('No data to search. Please enter');
     return;
   }
   imageService.query = query;
@@ -52,7 +52,7 @@ async function onSearch(e) {
 
     const markup = makeImageCardsMarkup(data);
 
-    renderImages(markup, refs.imageGallery);
+    renderImages(markup, refs.imgGallery);
 
     formSubm = false;
     addGalleryScrollObserver();
@@ -81,7 +81,7 @@ async function onLoadMore() {
     }
 
     const markup = makeImageCardsMarkup(data);
-    renderMoreImages(markup, refs.imageGallery);
+    renderMoreImages(markup, refs.imgGallery);
 
     simpeLightBoxGallery.refresh();
 
@@ -123,5 +123,5 @@ function addGalleryScrollObserver() {
   };
 
   const observer = new IntersectionObserver(callback, options);
-  observer.observe(refs.imageGallery);
+  observer.observe(refs.imgGallery);
 }
